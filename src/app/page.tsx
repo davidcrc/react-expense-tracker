@@ -5,7 +5,7 @@ import TransactionList from "@/components/Transactions/TransactionList";
 
 const Home = () => {
   return (
-    <main>
+    <main className="p-4" >
       <Header />
       <Balance />
       <TransactionForm />
