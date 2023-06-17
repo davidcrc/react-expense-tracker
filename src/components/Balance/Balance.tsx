@@ -11,7 +11,7 @@ const Balance = () => {
   const total = amounts.reduce((acc, item) => (acc += item), 0);
 
   return (
-    <div>
+    <div className="flex gap-4" >
       <h1>Your Balance</h1>
       <h1>{total}</h1>
     </div>
