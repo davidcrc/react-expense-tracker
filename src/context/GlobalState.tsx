@@ -12,8 +12,9 @@ const initialState = {
 };
 
 type GlobalContextProps = {
-  transactions: any;
+  transactions: ReducerTransaction[];
   addTransaction: (trasaction: ReducerTransaction) => void;
+  deleteTransaction: (id: string) => void;
 };
 
 export const GlobalContext = createContext<GlobalContextProps | null>(null);
@@ -28,10 +29,18 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
       payload: trasaction,
     });
   };
+  
+  const deleteTransaction = (id: string) => {
+    
+    dispatch({
+      type: "DELETE_TRANSACTION",
+      payload: id,
+    });
+  };
 
   return (
     <GlobalContext.Provider
-      value={{ transactions: state.transactions, addTransaction }}
+      value={{ transactions: state.transactions, addTransaction, deleteTransaction }}
     >
       {children}
     </GlobalContext.Provider>

@@ -1,5 +1,5 @@
 export type ReducerTransaction = {
-  id: number;
+  id: string;
   description: string;
   amount: number;
 }

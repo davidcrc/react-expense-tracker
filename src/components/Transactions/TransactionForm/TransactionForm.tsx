@@ -7,7 +7,7 @@ import { useGlobalState } from "@/context/GlobalState";
 
 const TransactionForm = () => {
   const { addTransaction } = useGlobalState();
-  const { control, handleSubmit } = useForm<TransactionFormType>({
+  const { control, handleSubmit, reset } = useForm<TransactionFormType>({
     mode: "all",
     defaultValues: {
       description: "",
@@ -19,10 +19,12 @@ const TransactionForm = () => {
     const { description, amount } = formData
     
     addTransaction({
-      id: 1,
+      id: window.crypto.randomUUID(),
       description,
       amount
     });
+
+    reset({})
   };
 
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
