@@ -5,14 +5,16 @@ import { Controller, useForm } from "react-hook-form";
 import { TransactionFormType } from "./hookforms.interfaces";
 import { useGlobalState } from "@/context/GlobalState";
 
+const DEFAULT_FORM = {
+  description: "",
+  amount: 0,
+};
+
 const TransactionForm = () => {
   const { addTransaction } = useGlobalState();
   const { control, handleSubmit, reset } = useForm<TransactionFormType>({
     mode: "all",
-    defaultValues: {
-      description: "",
-      amount: undefined,
-    },
+    defaultValues: DEFAULT_FORM,
   });
 
   const onSubmitTransactionForm = (formData: TransactionFormType) => {
@@ -24,7 +26,7 @@ const TransactionForm = () => {
       amount: +amount,
     });
 
-    reset({});
+    reset(DEFAULT_FORM);
   };
 
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -62,7 +64,9 @@ const TransactionForm = () => {
           )}
         />
 
-        <button className="bg-indigo-700 text-white px-3 py-2 rounded-lg block mb-2 w-full" >Add Transaction</button>
+        <button className="bg-indigo-700 text-white px-3 py-2 rounded-lg block mb-2 w-full">
+          Add Transaction
+        </button>
       </div>
     </form>
   );
