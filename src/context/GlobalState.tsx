@@ -1,5 +1,5 @@
 "use client";
-import { createContext, useContext, useReducer } from "react";
+import { createContext, useContext, useEffect, useReducer } from "react";
 import AppReducer from "./AppReducer";
 import { ReducerTransaction } from "./reducer-types";
 
@@ -8,7 +8,7 @@ type GlobalProviderProps = {
 };
 
 const initialState = {
-  transactions: [],     //ReducerTransaction
+  transactions: [], //ReducerTransaction
 };
 
 type GlobalContextProps = {
@@ -20,27 +20,36 @@ type GlobalContextProps = {
 export const GlobalContext = createContext<GlobalContextProps | null>(null);
 
 export const GlobalProvider = ({ children }: GlobalProviderProps) => {
-  const [state, dispatch] = useReducer(AppReducer, initialState);
+  const [state, dispatch] = useReducer(AppReducer, initialState, () => {
+    const localdata = localStorage.getItem("transactions");
+    return localdata ? JSON.parse(localdata) : initialState;
+  });
 
   const addTransaction = (trasaction: ReducerTransaction) => {
-    
     dispatch({
       type: "ADD_TRANSACTION",
       payload: trasaction,
     });
   };
-  
+
   const deleteTransaction = (id: string) => {
-    
     dispatch({
       type: "DELETE_TRANSACTION",
       payload: id,
     });
   };
 
+  useEffect(() => {
+    localStorage.setItem("transactions", JSON.stringify(state));
+  }, [state]);
+
   return (
     <GlobalContext.Provider
-      value={{ transactions: state.transactions, addTransaction, deleteTransaction }}
+      value={{
+        transactions: state.transactions,
+        addTransaction,
+        deleteTransaction,
+      }}
     >
       {children}
     </GlobalContext.Provider>
