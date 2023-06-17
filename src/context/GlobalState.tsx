@@ -1,22 +1,38 @@
 "use client";
 import { createContext, useContext, useReducer } from "react";
 import AppReducer from "./AppReducer";
+import { ReducerTransaction } from "./reducer-types";
 
 type GlobalProviderProps = {
   children: React.ReactNode;
 };
 
 const initialState = {
-  transactions: [],
+  transactions: [],     //ReducerTransaction
 };
 
-export const GlobalContext = createContext<{ transactions?: any }>({});
+type GlobalContextProps = {
+  transactions: any;
+  addTransaction: (trasaction: ReducerTransaction) => void;
+};
+
+export const GlobalContext = createContext<GlobalContextProps | null>(null);
 
 export const GlobalProvider = ({ children }: GlobalProviderProps) => {
   const [state, dispatch] = useReducer(AppReducer, initialState);
 
+  const addTransaction = (trasaction: ReducerTransaction) => {
+    
+    dispatch({
+      type: "ADD_TRANSACTION",
+      payload: trasaction,
+    });
+  };
+
   return (
-    <GlobalContext.Provider value={{ transactions: state.transactions }}>
+    <GlobalContext.Provider
+      value={{ transactions: state.transactions, addTransaction }}
+    >
       {children}
     </GlobalContext.Provider>
   );
